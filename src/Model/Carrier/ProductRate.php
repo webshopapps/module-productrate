@@ -35,6 +35,8 @@ namespace WebShopApps\ProductRate\Model\Carrier;
 
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
+use Magento\Catalog\Model\Product\Type as Type;
 
 class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     \Magento\Shipping\Model\Carrier\CarrierInterface
@@ -58,7 +60,6 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
     protected $_resultMethodFactory;
-
     
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -146,7 +147,6 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
 
         return $result;
     }
-    
 
     /**
      * ProductRate Rates Collector
@@ -166,20 +166,19 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
         if ($request->getFreeShipping() === true || $request->getPackageQty() == $this->getFreeBoxes()) {
             $price = 0;
         } else {
-
             $priceFound=false;
             $bundledIdUsed = $this->getConfigFlag('bundle_id');
 
             $configurableQty = 0;
             $ignoreQty=0;
-            foreach($items as $item) {
+            foreach ($items as $item) {
                 if ($item->getFreeShipping() && !$item->getProduct()->isVirtual()) {
                     $priceFound=true;
                     continue;
                 }
 
                 $currentQty = $item->getQty();
-                if ($item->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                if ($item->getProductType() == ConfigurableType::TYPE_CODE) {
                     $configurableQty = $currentQty;
                     continue;
                 } elseif ($configurableQty > 0) {
@@ -187,28 +186,25 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
                     $configurableQty = 0;
                 }
 
-
                 if ($item->getParentItem()!=null && $bundledIdUsed) {
                     $product = $item->getParentItem()->getProduct();
                 } else {
                     $product = $item->getProduct();
                 }
 
-                $shippingPrice 		= $product->getData('shipperhq_shipping_fee');
-                $addOnPrice 		= $product->getData('shipperhq_addon_price');
-                $isPercentageAddOn 	= $product->getData('shipperhq_inc_percent');
+                $shippingPrice = $product->getData('shipperhq_shipping_fee');
+                $addOnPrice = $product->getData('shipperhq_addon_price');
+                $isPercentageAddOn = $product->getData('shipperhq_inc_percent');
 
                 $parentQty = 1;
                 if ($item->getParentItem()!=null) {
-                    if ($item->getParentItem()->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
+                    if ($item->getParentItem()->getProductType() == Type::TYPE_BUNDLE) {
                         $parentQty = $item->getParentItem()->getQty();
                     }
                 }
 
                 if ($sumOfTotals) {
-
-                    if($shippingPrice)
-                    {
+                    if ($shippingPrice) {
                         $priceFound=true;
                         $price += $shippingPrice;
                     }
@@ -221,10 +217,8 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
                     $shippingPercent =  $isPercentageAddOn;
                     $shippingPrice =  $shippingPrice;
 
-                    if ($qty!=0)
-                    {
-                        if ($shippingPercent)
-                        {
+                    if ($qty!=0) {
+                        if ($shippingPercent) {
                             if ($shippingAddOn!='') {
                                 $price+=($shippingPrice*($shippingAddOn/100))*$qty;
                             } else {
@@ -246,30 +240,27 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
             }
 
             $max_shipping_cost=$this->getConfigData('max_shipping_cost');
-            if (!empty($max_shipping_cost) && $max_shipping_cost!='' &&  $max_shipping_cost>0) {
+            if (!empty($max_shipping_cost) && $max_shipping_cost!='' && $max_shipping_cost>0) {
                 if ($price>$max_shipping_cost) {
                     $price=$max_shipping_cost;
                 }
             }
-
 
             if ($price==0 && !$priceFound) {
                 if ($this->getConfigData('default_shipping_cost')!='') {
                     $price=$this->getConfigData('default_shipping_cost');
                 } else {
                     // we can't get a shipping price
-                   return null;
+                    return null;
                 }
             }
         }
 
         return $price;
-
     }
 
     /**
      * Apply the free shipping & virtual logic to get correct weights/values
-     * 
      * @param RateRequest $request
      * @return int
      */
@@ -322,7 +313,6 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
         return $freeQty;
     }
 
-
     /**
      * @param string $type
      * @param string $code
@@ -353,8 +343,6 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
         return $codes[$type][$code];
     }
 
-
-
     /**
      * Get allowed shipping methods
      *
@@ -364,6 +352,4 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
     {
         return ['productrate' => $this->getConfigData('name')];
     }
-
-
 }
