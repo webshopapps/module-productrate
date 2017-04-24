@@ -9,7 +9,7 @@ Facts
 
 Description
 -----------
-The ProductRate shipping extension is the original Magento solution that enables you to offer product specific shipping rates to customers. Enter shipping rates for each of your products in the admin panel and Product Rate will calculate the total shipping charge when your customers go to checkout.
+The ProductRate shipping extension is the original solution for Magento that enables you to offer product specific shipping rates to customers. Enter shipping rates for each of your products in the admin panel and Product Rate will calculate the total shipping charge when your customers go to checkout.
 
 This extension also gives you control of how shipping is calculated on multiple items. For example, you can add a flat or percentage surcharge on the shipping fee when there is more than one of the same product in the cart.
 
