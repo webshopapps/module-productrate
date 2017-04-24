@@ -1,5 +1,6 @@
 # ShipperHQ and WebShopApps ProductRate
-A Shipping Rate module for Magento 2.x which supports showing multiple shipping methods.  This is based on the Magento Tablerate module and is managed via a csv file.
+
+A Shipping Rate module for Magento 2.x which gives you the ability to set your shipping rates on a product-by-product basis.
 
 Facts
 -----
@@ -8,7 +9,9 @@ Facts
 
 Description
 -----------
-The ProductRate shipping extension is the original Magento solution that enables you to offer multiple shipping options to customers based on their locations. With ProductRate you can define different shipping rates according to destination, shipping method and the weight, price or quantity of an item.
+The ProductRate shipping extension is the original Magento solution that enables you to offer product specific shipping rates to customers. Enter shipping rates for each of your products in the admin panel and Product Rate will calculate the total shipping charge when your customers go to checkout.
+
+This extension also gives you control of how shipping is calculated on multiple items. For example, you can add a flat or percentage surcharge on the shipping fee when there is more than one of the same product in the cart.
 
 Compatibility
 -------------
@@ -38,12 +41,6 @@ If you have any issues with this extension, open an issue on [GitHub](https://gi
 
 Credits
 ---------
-This extension borrows heavily from the Tablerate capability in Magento2.  In order to keep codebase as bug-free and
-conformant as possible the tablerate code is used in preference to writing from scratch.  This hopefully also
-allows for easier understanding by users.
-
-We would like to acknowledge and thank the Magento 2 Development team for making their codebase open for such use.
-
 The composer structure is taken from various sources, most heavily using structure from https://github.com/sjparkinson/static-review.
 
 Assistance around composer, Magento2 structure, etc was also taken from these sources:
