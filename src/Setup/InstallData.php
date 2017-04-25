@@ -39,7 +39,6 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Catalog\Setup\CategorySetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 
-
 /**
  * @codeCoverageIgnore
  */
@@ -52,7 +51,6 @@ class InstallData implements InstallDataInterface
      * @var CategorySetupFactory
      */
     protected $categorySetupFactory;
-
 
     /**
      * Init
@@ -96,7 +94,7 @@ class InstallData implements InstallDataInterface
             'comparable'               => false,
             'is_configurable'          => false,
             'unique'                   => false,
-            'user_defined'			   => true,
+            'user_defined'             => true,
             'used_in_product_listing'  => false
         ]);
 
@@ -116,11 +114,10 @@ class InstallData implements InstallDataInterface
             'comparable'               => false,
             'is_configurable'          => false,
             'unique'                   => false,
-            'user_defined'			   => true,
+            'user_defined'             => true,
             'used_in_product_listing'  => false,
             'note'                     => 'Price or Percentage'
         ]);
-
 
         /* ------ shipperhq_shipping_add_on_price -------- */
         $catalogSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, 'shipperhq_inc_percent', [
@@ -138,35 +135,34 @@ class InstallData implements InstallDataInterface
             'comparable'               => false,
             'is_configurable'          => false,
             'unique'                   => false,
-            'user_defined'			   => true,
+            'user_defined'             => true,
             'used_in_product_listing'  => false,
             'note'                     => 'Default is Price'
         ]);
-
 
         $entityTypeId = $catalogSetup->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY);
 
         $attributeSetArr = $catalogSetup->getAllAttributeSetIds($entityTypeId);
 
-
         $stdAttributeCodes = ['shipperhq_shipping_fee' => '1',  'shipperhq_shipping_addon' => '2'];
 
-
         foreach ($attributeSetArr as $attributeSetId) {
-
             $catalogSetup->addAttributeGroup($entityTypeId, $attributeSetId, 'Shipping', '99');
 
             $attributeGroupId = $catalogSetup->getAttributeGroupId($entityTypeId, $attributeSetId, 'Shipping');
 
-            foreach($stdAttributeCodes as $code => $sort) {
+            foreach ($stdAttributeCodes as $code => $sort) {
                 $attributeId = $catalogSetup->getAttributeId($entityTypeId, $code);
-                $catalogSetup->addAttributeToGroup($entityTypeId, $attributeSetId, $attributeGroupId, $attributeId, $sort);
+                $catalogSetup->addAttributeToGroup(
+                    $entityTypeId,
+                    $attributeSetId,
+                    $attributeGroupId,
+                    $attributeId,
+                    $sort
+                );
             }
-
-        };
-
+        }
 
         $installer->endSetup();
-
     }
 }
