@@ -3,6 +3,6 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.0.1
-patch
+SHQ16-2037 correct function parameter
 
 

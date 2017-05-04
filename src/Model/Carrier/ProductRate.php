@@ -151,10 +151,10 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
     /**
      * ProductRate Rates Collector
      *
-     * @param Mage_Shipping_Model_Rate_Request $request
-     * @return Mage_Shipping_Model_Rate_Result
+     * @param RateRequest $request
+     * @return String $price
      */
-    private function calculateShippingPrice(Mage_Shipping_Model_Rate_Request $request)
+    private function calculateShippingPrice(RateRequest $request)
     {
         
         $price = 0;
