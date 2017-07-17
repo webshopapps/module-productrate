@@ -120,6 +120,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
             $method->setCarrier('productrate');
             $method->setCarrierTitle($this->getConfigData('title'));
             $method->setMethod('productrate');
+            $method->setMethodTitle($this->getConfigData('name'));
 
             if ($request->getFreeShipping() === true || $request->getPackageQty() == $freeQty) {
                 $shippingPrice = 0;
@@ -194,7 +195,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
 
                 $shippingPrice = $product->getData('shipperhq_shipping_fee');
                 $addOnPrice = $product->getData('shipperhq_addon_price');
-                $isPercentageAddOn = $product->getData('shipperhq_inc_percent');
+                $isPercentageAddOn = $product->getData('shipperhq_inc_percent') == 1; //SHQ16-2157 ensure value is Yes
 
                 $parentQty = 1;
                 if ($item->getParentItem()!=null) {

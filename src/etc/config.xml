@@ -42,8 +42,8 @@
                 <condition_name>package_weight</condition_name>
                 <include_virtual_price>1</include_virtual_price>
                 <model>WebShopApps\ProductRate\Model\Carrier\ProductRate</model>
-                <name>Matrix Rate</name>
-                <title>Select Shipping Method</title>
+                <name>Shipping Price</name>
+                <title>Product Rate</title>
                 <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
                 <handling_type>F</handling_type>
             </productrate>

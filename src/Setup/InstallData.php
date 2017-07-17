@@ -119,34 +119,45 @@ class InstallData implements InstallDataInterface
             'note'                     => 'Price or Percentage'
         ]);
 
-        /* ------ shipperhq_shipping_add_on_price -------- */
-        $catalogSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, 'shipperhq_inc_percent', [
-            'type'                     => 'decimal',
-            'backend' => 'Magento\Catalog\Model\Product\Attribute\Backend\Price',
-            'input'                    => 'price',
-            'label'                    => 'Calculate Additional using Percentages',
-            'global' =>\Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-            'visible'                  => true,
-            'required'                 => false,
-            'visible_on_front'         => false,
-            'is_html_allowed_on_front' => false,
-            'searchable'               => false,
-            'filterable'               => false,
-            'comparable'               => false,
-            'is_configurable'          => false,
-            'unique'                   => false,
-            'user_defined'             => true,
-            'used_in_product_listing'  => false,
-            'note'                     => 'Default is Price'
-        ]);
+        /* ------ shipperhq_inc_percent -------- */
+        $catalogSetup->addAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'shipperhq_inc_percent',
+            [
+                'backend' => 'Magento\Catalog\Model\Product\Attribute\Backend\Boolean',
+                'frontend' => '',
+                'label' => 'Calculate Additional using Percentages',
+                'input' => 'select',
+                'class' => '',
+                'source' => 'Magento\Catalog\Model\Product\Attribute\Source\Boolean',
+                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
+                'visible'                  => true,
+                'required'                 => false,
+                'visible_on_front'         => false,
+                'is_html_allowed_on_front' => false,
+                'searchable'               => false,
+                'filterable'               => false,
+                'comparable'               => false,
+                'is_configurable'          => false,
+                'unique'                   => false,
+                'user_defined'             => true,
+                'used_in_product_listing'  => false,
+                'note'                     => 'Default is Price'
+            ]
+        );
 
         $entityTypeId = $catalogSetup->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY);
 
         $attributeSetArr = $catalogSetup->getAllAttributeSetIds($entityTypeId);
 
-        $stdAttributeCodes = ['shipperhq_shipping_fee' => '1',  'shipperhq_shipping_addon' => '2'];
+        $stdAttributeCodes = ['shipperhq_shipping_fee' => '1',  'shipperhq_addon_price' => '2'];
 
         foreach ($attributeSetArr as $attributeSetId) {
+            $migrated = $catalogSetup->getAttributeGroup($entityTypeId, $attributeSetId, 'migration-shipping');
+            if ($migrated !== false) {
+                $catalogSetup->removeAttributeGroup($entityTypeId, $attributeSetId, 'migration-shipping');
+            }
+
             $catalogSetup->addAttributeGroup($entityTypeId, $attributeSetId, 'Shipping', '99');
 
             $attributeGroupId = $catalogSetup->getAttributeGroupId($entityTypeId, $attributeSetId, 'Shipping');
