@@ -15,7 +15,7 @@ This extension also gives you control of how shipping is calculated on multiple 
 
 Compatibility
 -------------
-- Magento >= 2.0
+- Magento >= 2.0 (Includes 2.2)
 
 This library aims to support and is tested against the following PHP
 implementations:
