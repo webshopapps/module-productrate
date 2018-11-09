@@ -49,9 +49,10 @@ class Totalling implements \Magento\Framework\Option\ArrayInterface
         $this->carrierProductRate = $carrierProductRate;
     }
 
-    /**
-     * @return array
-     */
+	/**
+	 * @return array
+	 * @throws \Magento\Framework\Exception\LocalizedException
+	 */
     public function toOptionArray()
     {
         $arr = [];

@@ -113,13 +113,14 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
         $request->setPackageWeight($oldWeight);
         $request->setPackageQty($oldQty);
         
-        if (!empty($productShippingPrice) && $productShippingPrice >= 0) {
+        if ($productShippingPrice !== null && $productShippingPrice >= 0) {
             /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
             $method = $this->_resultMethodFactory->create();
 
             $method->setCarrier('productrate');
             $method->setCarrierTitle($this->getConfigData('title'));
             $method->setMethod('productrate');
+            $method->setMethodTitle($this->getConfigData('name'));
 
             if ($request->getFreeShipping() === true || $request->getPackageQty() == $freeQty) {
                 $shippingPrice = 0;
@@ -151,12 +152,11 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
     /**
      * ProductRate Rates Collector
      *
-     * @param Mage_Shipping_Model_Rate_Request $request
-     * @return Mage_Shipping_Model_Rate_Result
+     * @param $request
+     * @return int shipping price
      */
-    private function calculateShippingPrice(Mage_Shipping_Model_Rate_Request $request)
+    private function calculateShippingPrice($request)
     {
-        
         $price = 0;
 
         $items = $request->getAllItems();
