@@ -112,8 +112,8 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
         // set back to old values
         $request->setPackageWeight($oldWeight);
         $request->setPackageQty($oldQty);
-        
-        if (!empty($productShippingPrice) && $productShippingPrice >= 0) {
+
+		if ($productShippingPrice !== null && $productShippingPrice >= 0) {
             /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
             $method = $this->_resultMethodFactory->create();
 

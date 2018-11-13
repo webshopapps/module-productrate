@@ -72,5 +72,3 @@ We also dutifully respect the [Magento][] OSL license, which is included in this
 Copyright
 ---------
 Copyright (c) 2015 Zowta LLC & Zowta Ltd.
-
-
