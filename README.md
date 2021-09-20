@@ -15,15 +15,8 @@ This extension also gives you control of how shipping is calculated on multiple 
 
 Compatibility
 -------------
-- Magento >= 2.0 (Includes 2.2)
-
-This library aims to support and is tested against the following PHP
-implementations:
-
-* PHP 5.5
-* PHP 5.6
-* PHP 5.7
-enforced in the composer.json
+- Magento >= 2.0 (Includes 2.4)
+- Supports both Magento Opensource (Community) and Magento Commerce (Enterprise)
 
 Installation Instructions
 -------------------------
@@ -35,7 +28,7 @@ Install using composer by adding to your composer file using commands:
 
 Support
 -------
-For further information on using ProductRate, please refer to our [online documentation](http://support.webshopapps.com/productrate/).
+For further information on using ProductRate, please refer to our [online documentation](https://docs.shipperhq.com/category/webshopapps-extensions/product-rate/).
 If you have any issues with this extension, open an issue on [GitHub](https://github.com/webshopapps/module-productrate/issues).
 
 
