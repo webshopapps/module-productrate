@@ -14,3 +14,7 @@ SHQ18-1039 Fixed issue with no rates when price set to 0
 Updated README
 
 
+## 1.1.2 (2022-06-20)
+New release for marketplace
+
+
