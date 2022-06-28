@@ -18,3 +18,7 @@ Updated README
 New release for marketplace
 
 
+## 1.2.0 (2022-06-28)
+MNB-2604 Moved to declarative schema
+
+

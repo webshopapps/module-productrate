@@ -1,82 +1,80 @@
 <?php
-/**
- * WebShopApps
+/*
+ * ShipperHQ
  *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * WebShopApps ProductRate
- *
- * @category WebShopApps
- * @package WebShopApps_ProductRate
- * @copyright Copyright (c) 2014 Zowta LLC (http://www.WebShopApps.com)
+ * @category ShipperHQ
+ * @package ShipperHQ_Shipper
+ * @copyright Copyright (c) 2022 Zowta LTD and Zowta LLC (http://www.ShipperHQ.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @author WebShopApps Team sales@webshopapps.com
- *
+ * @author ShipperHQ Team sales@shipperhq.com
  */
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
+declare(strict_types=1);
 
-namespace WebShopApps\ProductRate\Setup;
+namespace WebShopApps\ProductRate\Setup\Patch\Data;
 
-use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Catalog\Setup\CategorySetupFactory;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as AttributeCollectionFactory;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
 
-/**
- * @codeCoverageIgnore
- */
-class InstallData implements InstallDataInterface
+class InstallProductRateAttributes implements DataPatchInterface
 {
-
     /**
      * Category setup factory
-     *
      * @var CategorySetupFactory
      */
     protected $categorySetupFactory;
+    /**
+     * @var ModuleDataSetupInterface $moduleDataSetup
+     */
+    private $moduleDataSetup;
+    /**
+     * @var AttributeCollectionFactory
+     */
+    private $attributeCollectionFactory;
 
     /**
-     * Init
-     *
-     * @param CategorySetupFactory $categorySetupFactory
+     * @param ModuleDataSetupInterface   $moduleDataSetup
+     * @param AttributeCollectionFactory $attributeCollectionFactory
+     * @param CategorySetupFactory       $categorySetupFactory
      */
     public function __construct(
-        CategorySetupFactory $categorySetupFactory
+        ModuleDataSetupInterface   $moduleDataSetup,
+        AttributeCollectionFactory $attributeCollectionFactory,
+        CategorySetupFactory       $categorySetupFactory
     ) {
+        $this->moduleDataSetup = $moduleDataSetup;
         $this->categorySetupFactory = $categorySetupFactory;
+        $this->attributeCollectionFactory = $attributeCollectionFactory
+            ?: ObjectManager::getInstance()->get(AttributeCollectionFactory::class);
     }
 
     /**
-     * Installs data for a module
-     *
-     * @param ModuleDataSetupInterface $setup
-     * @param ModuleContextInterface $context
+     * @inheritdoc
+     */
+    public static function getDependencies(): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getVersion(): string
+    {
+        return '1.0.0';
+    }
+
+    /**
+     * Do Upgrade
      * @return void
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function apply()
     {
-        $installer = $setup;
-
-        $installer->startSetup();
-
-        $catalogSetup = $this->categorySetupFactory->create(['setup' => $setup]);
+        $catalogSetup = $this->categorySetupFactory->create(['setup' => $this->moduleDataSetup]);
 
         /* ------ shipperhq_shipping_fee -------- */
         $catalogSetup->addAttribute(\Magento\Catalog\Model\Product::ENTITY, 'shipperhq_shipping_fee', [
@@ -146,24 +144,34 @@ class InstallData implements InstallDataInterface
             ]
         );
 
-        $entityTypeId = $catalogSetup->getEntityTypeId(\Magento\Catalog\Model\Product::ENTITY);
-
+        $entityTypeId = $catalogSetup->getEntityTypeId(Product::ENTITY);
         $attributeSetArr = $catalogSetup->getAllAttributeSetIds($entityTypeId);
-
         $stdAttributeCodes = ['shipperhq_shipping_fee' => '1',  'shipperhq_addon_price' => '2'];
 
         foreach ($attributeSetArr as $attributeSetId) {
-            $migrated = $catalogSetup->getAttributeGroup($entityTypeId, $attributeSetId, 'migration-shipping');
-            if ($migrated !== false) {
+            //SHQ16-2123 handle migrated instances from M1 to M2
+            $migrateGroupId = $catalogSetup->getAttributeGroup($entityTypeId, $attributeSetId, 'migration-shipping');
+            $existingAttributeIds = [];
+            if ($migrateGroupId) {
+                $existingAttributeIds = $this->getNonShqAttributeIds(
+                    $catalogSetup,
+                    'migration-shipping',
+                    $attributeSetId
+                );
                 $catalogSetup->removeAttributeGroup($entityTypeId, $attributeSetId, 'migration-shipping');
             }
 
-            $catalogSetup->addAttributeGroup($entityTypeId, $attributeSetId, 'Shipping', '99');
+            // SHQ18-2929 In M2.3.3 this group already exists. Don't create a duplicate
+            if (!$catalogSetup->getAttributeGroup($entityTypeId, $attributeSetId, 'Shipping')) {
+                $catalogSetup->addAttributeGroup($entityTypeId, $attributeSetId, 'Shipping', '99');
+            }
 
             $attributeGroupId = $catalogSetup->getAttributeGroupId($entityTypeId, $attributeSetId, 'Shipping');
+            $ourAttributeIds = [];
 
             foreach ($stdAttributeCodes as $code => $sort) {
                 $attributeId = $catalogSetup->getAttributeId($entityTypeId, $code);
+                $ourAttributeIds[] = $attributeId;
                 $catalogSetup->addAttributeToGroup(
                     $entityTypeId,
                     $attributeSetId,
@@ -172,8 +180,54 @@ class InstallData implements InstallDataInterface
                     $sort
                 );
             }
+            // SHQ18-2825 Add any attributes that were in migration-shipping that were not our attributes back
+            if (count($existingAttributeIds)) {
+                $attributeIdsToAdd = array_diff($existingAttributeIds, $ourAttributeIds);
+                foreach ($attributeIdsToAdd as $attributeId) {
+                    $catalogSetup->addAttributeToGroup(
+                        $entityTypeId,
+                        $attributeSetId,
+                        $attributeGroupId,
+                        $attributeId,
+                        10
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * SHQ18-2825 Gets all attribute IDs for a given attribute group
+     *
+     * @param $catalogSetup
+     * @param $attributeGroupName
+     * @param $attributeSetId
+     *
+     * @return array
+     */
+    private function getNonShqAttributeIds($catalogSetup, $attributeGroupName, $attributeSetId)
+    {
+        $entityTypeId = $catalogSetup->getEntityTypeId(Product::ENTITY);
+        $attributeGroupId = $catalogSetup->getAttributeGroupId(
+            $entityTypeId,
+            $attributeSetId,
+            $attributeGroupName
+        );
+        $collection = $this->attributeCollectionFactory->create();
+        $collection->setAttributeGroupFilter($attributeGroupId);
+        $allAttributeIds = [];
+        foreach ($collection->getItems() as $attribute) {
+            $allAttributeIds[] = $attribute->getAttributeId();
         }
 
-        $installer->endSetup();
+        return $allAttributeIds;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAliases(): array
+    {
+        return [];
     }
 }

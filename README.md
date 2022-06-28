@@ -24,13 +24,37 @@ Install using composer by adding to your composer file using commands:
 
 1. composer require webshopapps/module-productrate
 2. composer update
-3. bin/magento setup:upgrade
+3. php bin/magento setup:upgrade
 
-Support
+You must reindex your Magento store after installation
+4. php bin/magento indexer:reindex
+
+Configuration
 -------
+WebShopApps Product Rate allows you to set shipping prices per product in your catalog. 
+
+Enable WebShopApps ProductRate
+1. Login to your Magento admin 
+2. Navigate to Stores > Configuration > Sales > Shipping Methods 
+3. Open the WebShopApps Product Rate section, set Enabled to Yes 
+4. Save Config 
+
+Set Shipping Prices on your Products
+1. Navigate to Catalog > Products 
+2. Edit your product
+3. Open Shipping section
+4. Set a price for shipping for this item in the Shipping Fee field
+5. Save 
+
+
+To Test Your Configuration
+1. Add your product to the cart
+2. Navigate to the cart and estimate shipping rates 
+3. Shipping rate will be the shipping fee you assigned to the item above
+
+
 For further information on using ProductRate, please refer to our [online documentation](https://docs.shipperhq.com/category/webshopapps-extensions/product-rate/).
 If you have any issues with this extension, open an issue on [GitHub](https://github.com/webshopapps/module-productrate/issues).
-
 
 Credits
 ---------

@@ -37,9 +37,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
 use Magento\Catalog\Model\Product\Type as Type;
+use Magento\Shipping\Model\Carrier\AbstractCarrier;
+use Magento\Shipping\Model\Carrier\CarrierInterface;
 
-class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
-    \Magento\Shipping\Model\Carrier\CarrierInterface
+class ProductRate extends AbstractCarrier implements CarrierInterface
 {
     /**
      * @var string
@@ -50,7 +51,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
      * @var bool
      */
     protected $_isFixed = false;
-    
+
     /**
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
@@ -60,7 +61,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
     protected $_resultMethodFactory;
-    
+
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
@@ -96,7 +97,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
             return false;
         }
         $freeQty = $this->applyFreeShipping($request);
-        
+
         // Package weight and qty free shipping
         $oldWeight = $request->getPackageWeight();
         $oldQty = $request->getPackageQty();
@@ -106,9 +107,9 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
 
         /** @var \Magento\Shipping\Model\Rate\Result $result */
         $result = $this->_rateResultFactory->create();
-        
+
         $productShippingPrice = $this->calculateShippingPrice($request);
-        
+
         // set back to old values
         $request->setPackageWeight($oldWeight);
         $request->setPackageQty($oldQty);
@@ -157,7 +158,7 @@ class ProductRate extends \Magento\Shipping\Model\Carrier\AbstractCarrier implem
      */
     private function calculateShippingPrice(RateRequest $request)
     {
-        
+
         $price = 0;
 
         $items = $request->getAllItems();
