@@ -5,7 +5,6 @@ A Shipping Rate module for Magento 2.x which gives you the ability to set your s
 Facts
 -----
 - [extension on GitHub](https://github.com/webshopapps/module-productrate)
-- Magento v1.0 available for download from www.webshopapps.com
 
 Description
 -----------
@@ -15,8 +14,13 @@ This extension also gives you control of how shipping is calculated on multiple 
 
 Compatibility
 -------------
-- Magento >= 2.0 (Includes 2.4)
-- Supports both Magento Opensource (Community) and Magento Commerce (Enterprise)
+- Magento >= 2.3
+
+per the [official Magento 2 requirements](https://experienceleague.adobe.com/docs/commerce-operations/installation-guide/system-requirements.html)
+
+Supports both Magento Opensource (Community) and Magento Commerce (Enterprise)
+
+Compatibility with earlier editions is possible but not maintained.
 
 Installation Instructions
 -------------------------
@@ -58,18 +62,20 @@ If you have any issues with this extension, open an issue on [GitHub](https://gi
 
 Credits
 ---------
-The composer structure is taken from various sources, most heavily using structure from https://github.com/sjparkinson/static-review.
+The composer structure is taken from various sources, most heavily using structure from <https://github.com/sjparkinson/static-review>.
 
 Assistance around composer, Magento2 structure, etc was also taken from these sources:
 
-* [https://github.com/Genmato/MultiStoreSearchFields](http://)
-* [https://alankent.wordpress.com/2014/08/03/creating-a-magento-2-composer-module/](http://)
-* [https://github.com/SchumacherFM/mage2-advanced-rest-permissions](http://)
+* <https://github.com/Genmato/MultiStoreSearchFields>
+* <https://alankent.wordpress.com/2014/08/03/creating-a-magento-2-composer-module/>
+* <https://github.com/SchumacherFM/mage2-advanced-rest-permissions>
 
 Support
 -------
 If you have any issues with this extension, open an issue on [GitHub](https://github.com/webshopapps/module-productrate/issues).
-Alternatively you can contact us via email at support@webshopapps.com or via our website http://webshopapps.com/contacts/
+Alternatively you can contact us via email at support@webshopapps.com
+
+WebShopApps ProductRate is provided AS IS and we are not accepting feature requests at this time. Extended functionality is available via [ShipperHQ](https://www.shipperhq.com).
 
 Contribution
 ------------
@@ -77,14 +83,13 @@ Any contribution is highly appreciated. The best way to contribute code is to op
 
 License
 -------
-Copyright (c) 2015 Zowta LLC & Zowta Ltd. See [LICENSE][] for
-details.
+Copyright (c) 2015 Zowta LLC & Zowta Ltd. See [LICENSE] for details.
 
-We also dutifully respect the [Magento][] OSL license, which is included in this codebase.
+We also dutifully respect the [Magento] OSL license, which is included in this codebase.
 
 
-[license]: LICENSE.md
-[magento]: Magento2_LICENSE.md
+[license]: LICENSE.txt
+[magento]: https://github.com/magento/magento2/blob/2.4-develop/LICENSE.txt
 
 Copyright
 ---------
