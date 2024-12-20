@@ -26,3 +26,7 @@ MNB-2604 Moved to declarative schema
 SHQ23-1431 Update readme
 
 
+## 1.2.2 (2024-12-20)
+SHQ23-4066 Marketplace Update
+
+
