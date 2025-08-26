@@ -21,38 +21,37 @@
  * WebShopApps ProductRate
  *
  * @category WebShopApps
- * @package WebShopApps_ProductRate
+ * @package WebShopApps\ProductRate
  * @copyright Copyright (c) 2016 Zowta LLC (http://www.WebShopApps.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author WebShopApps Team sales@webshopapps.com
  *
  */
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
 
 namespace WebShopApps\ProductRate\Model\Config\Source;
 
-class Totalling implements \Magento\Framework\Option\ArrayInterface
+use Magento\Framework\Data\OptionSourceInterface;
+use WebShopApps\ProductRate\Model\Carrier\ProductRate;
+
+class Totalling implements OptionSourceInterface
 {
     /**
-     * @var \WebShopApps\ProductRate\Model\Carrier\ProductRate
+     * @var ProductRate
      */
     private $carrierProductRate;
 
     /**
-     * @param \WebShopApps\ProductRate\Model\Carrier\ProductRate $carrierProductRate
+     * @param ProductRate $carrierProductRate
      */
-    public function __construct(\WebShopApps\ProductRate\Model\Carrier\ProductRate $carrierProductRate)
+    public function __construct(ProductRate $carrierProductRate)
     {
         $this->carrierProductRate = $carrierProductRate;
     }
 
-	/**
-	 * @return array
-	 * @throws \Magento\Framework\Exception\LocalizedException
-	 */
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function toOptionArray()
     {
         $arr = [];

@@ -21,24 +21,25 @@
  * WebShopApps ProductRate
  *
  * @category WebShopApps
- * @package WebShopApps_ProductRate
+ * @package WebShopApps\ProductRate
  * @copyright Copyright (c) 2016 Zowta LLC (http://www.WebShopApps.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author WebShopApps Team sales@webshopapps.com
  *
  */
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace WebShopApps\ProductRate\Model\Carrier;
 
+use Magento\Catalog\Model\Product\Type as Type;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableType;
-use Magento\Catalog\Model\Product\Type as Type;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Rate\ResultFactory;
+use Psr\Log\LoggerInterface;
 
 class ProductRate extends AbstractCarrier implements CarrierInterface
 {
@@ -53,30 +54,30 @@ class ProductRate extends AbstractCarrier implements CarrierInterface
     protected $_isFixed = false;
 
     /**
-     * @var \Magento\Shipping\Model\Rate\ResultFactory
+     * @var ResultFactory
      */
     protected $_rateResultFactory;
 
     /**
-     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
+     * @var MethodFactory
      */
     protected $_resultMethodFactory;
 
     /**
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $resultMethodFactory
+     * @param ScopeConfigInterface $scopeConfig
+     * @param ErrorFactory $rateErrorFactory
+     * @param LoggerInterface $logger
+     * @param ResultFactory $rateResultFactory
+     * @param MethodFactory $resultMethodFactory
      * @param array $data
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
-        \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $resultMethodFactory,
+        ScopeConfigInterface $scopeConfig,
+        ErrorFactory $rateErrorFactory,
+        LoggerInterface $logger,
+        ResultFactory $rateResultFactory,
+        MethodFactory $resultMethodFactory,
         array $data = []
     ) {
         $this->_rateResultFactory = $rateResultFactory;
@@ -114,7 +115,7 @@ class ProductRate extends AbstractCarrier implements CarrierInterface
         $request->setPackageWeight($oldWeight);
         $request->setPackageQty($oldQty);
 
-		if ($productShippingPrice !== null && $productShippingPrice >= 0) {
+        if ($productShippingPrice !== null && $productShippingPrice >= 0) {
             /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
             $method = $this->_resultMethodFactory->create();
 

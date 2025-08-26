@@ -3,7 +3,7 @@
  * ShipperHQ
  *
  * @category ShipperHQ
- * @package ShipperHQ_Shipper
+ * @package WebShopApps\ProductRate
  * @copyright Copyright (c) 2022 Zowta LTD and Zowta LLC (http://www.ShipperHQ.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author ShipperHQ Team sales@shipperhq.com
@@ -14,7 +14,6 @@ namespace WebShopApps\ProductRate\Setup\Patch\Data;
 
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Setup\CategorySetupFactory;
-use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as AttributeCollectionFactory;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Setup\ModuleDataSetupInterface;

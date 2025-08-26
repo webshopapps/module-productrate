@@ -22,27 +22,22 @@
  * WebShopApps ProductRate
  *
  * @category WebShopApps
- * @package WebShopApps_ProductRate
+ * @package WebShopApps\ProductRate
  * @copyright Copyright (c) 2016 Zowta LLC (http://www.WebShopApps.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  * @author WebShopApps Team sales@webshopapps.com
  *
- */
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="carriers">
             <group id="productrate" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>WebShopApps Product Rate</label>
+                <label>ShipperHQ Product Rate</label>
                 <comment>
                     <![CDATA[
 				<div style="padding:10px;background-color:#fff;border:1px solid #ddd;margin-bottom:7px;">
-				This module was developed by <a href="http://www.webshopapps.com" target="_blank">www.WebShopApps.com</a> - <b>Magento Shipping Extension Specialists</b>.
-				<br/>For docs & examples refer to the WebShopApps <a href="http://support.webshopapps.com/productrate/">knowledge base</a>.
+				This module was developed by <a href="http://www.ShipperHQ.com" target="_blank">www.ShipperHQ.com</a> - <b>Shipping Specialists</b>.
 				</div>
 			  ]]>
                 </comment>
