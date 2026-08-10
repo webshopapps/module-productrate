@@ -34,3 +34,7 @@ SHQ23-4066 Marketplace Update
 SHQ23-5374 Copyright update and readme updates
 
 
+## 1.2.4 (2026-08-10)
+Remove duplicate CHANGELOG.MD, keep CHANGELOG.md
+
+
